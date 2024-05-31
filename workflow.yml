@@ -1,0 +1,25 @@
+name: Genesys Cloud Workflow - Deploying tamil callflow
+
+on:
+  push:
+    branches:
+      -main
+
+jobs:
+  deploy-archyfile-flow:
+    runs-on: ubuntu-latest
+    env:
+      GENESYSCLOUD_OAUTHCLIENT_ID: ${{ secrets.CLIENT_ID }}
+      GENESYSCLOUD_OAUTHCLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+      GENESYSCLOUD_API_REGION: "https://api.use1.pure.cloud"
+      GENESYSCLOUD_REGION: "us-east-1"
+      GENESYSCLOUD_ARCHY_REGION: "mypurecloud.com"
+      GENESYSCLOUD_EMAIL_DOMAIN: "devengagedev"
+      GENESYSCLOUD_EMAIL_DOMAIN_REGION: "pure.cloud"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./actions/genesys-cloud-dev-tools
+      - uses: ./actions/genesys-cloud-publish-archy-flow
+        with:
+          architect-flow-path: $GITHUB_WORKSPACE/tamil.yml
+          architect-results-path: $GITHUB_WORKSPACE/output/results.json
