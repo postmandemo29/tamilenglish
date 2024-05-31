@@ -1,0 +1,192 @@
+inboundCall:
+  name: English or Tamil
+  division: Home
+  startUpRef: "/inboundCall/menus/menu[Main Menu_10]"
+  defaultLanguage: en-us
+  supportedLanguages:
+    en-us:
+      defaultLanguageSkill:
+        noValue: true
+      textToSpeech:
+        defaultEngine:
+          voice: Jill
+  initialGreeting:
+    tts: Welcome to Tamil World or English World
+  settingsActionDefaults:
+    playAudioOnSilence:
+      timeout:
+        lit:
+          seconds: 40
+    detectSilence:
+      timeout:
+        lit:
+          seconds: 40
+    callData:
+      processingPrompt:
+        lit:
+          name: PromptSystem.processing
+    collectInput:
+      noEntryTimeout:
+        lit:
+          seconds: 5
+    dialByExtension:
+      interDigitTimeout:
+        lit:
+          seconds: 6
+    transferToUser:
+      connectTimeout:
+        noValue: true
+    transferToNumber:
+      connectTimeout:
+        noValue: true
+    transferToGroup:
+      connectTimeout:
+        noValue: true
+    transferToFlowSecure:
+      connectTimeout:
+        lit:
+          seconds: 15
+  settingsErrorHandling:
+    errorHandling:
+      disconnect:
+        none: true
+    preHandlingAudio:
+      tts: You are not right to be in tamil or english world.
+  settingsMenu:
+    extensionDialingMaxDelay:
+      lit:
+        seconds: 1
+    listenForExtensionDialing:
+      lit: true
+    menuSelectionTimeout:
+      lit:
+        seconds: 10
+    repeatCount:
+      lit: 3
+  settingsPrompts:
+    ensureAudioInPrompts: false
+    promptMediaToValidate:
+      - mediaType: audio
+      - mediaType: tts
+  settingsSpeechRec:
+    completeMatchTimeout:
+      lit:
+        ms: 100
+    incompleteMatchTimeout:
+      lit:
+        ms: 1500
+    maxSpeechLengthTimeout:
+      lit:
+        seconds: 20
+    minConfidenceLevel:
+      lit: 50
+    asrCompanyDir: none
+    asrEnabledOnFlow: true
+    suppressRecording: false
+  menus:
+    - menu:
+        name: Main Menu
+        refId: Main Menu_10
+        audio:
+          tts: Press 1 for English Press 2 for Tamil Press 9 for Disconnect
+        settingsMenu:
+          extensionDialingMaxDelay:
+            noValue: true
+          listenForExtensionDialing:
+            noValue: true
+          menuSelectionTimeout:
+            noValue: true
+          repeatCount:
+            noValue: true
+        settingsSpeechRec:
+          completeMatchTimeout:
+            noValue: true
+          incompleteMatchTimeout:
+            noValue: true
+          maxSpeechLengthTimeout:
+            noValue: true
+          minConfidenceLevel:
+            noValue: true
+        choices:
+          - menuJumpToTask:
+              name: English
+              dtmf: digit_1
+              globalDtmf: false
+              globalSpeechRecTerms: false
+              targetTaskRef: "/inboundCall/tasks/task[English Task_22]"
+          - menuDisconnect:
+              name: Disconnect
+              refId: Disconnect_11
+              dtmf: digit_9
+              globalDtmf: false
+              globalSpeechRecTerms: false
+          - menuJumpToTask:
+              name: Tamil
+              dtmf: digit_3
+              globalDtmf: false
+              globalSpeechRecTerms: false
+              targetTaskRef: "/inboundCall/tasks/task[Tamil_24]"
+        defaultChildMenuRef: "./choices/menuDisconnect[Disconnect_11]"
+  tasks:
+    - task:
+        name: English Task
+        refId: English Task_22
+        actions:
+          - transferToAcd:
+              name: Transfer to ACD
+              targetQueue:
+                lit:
+                  name: Sales
+              preTransferAudio:
+                tts: Wlecome to english wordl
+              failureTransferAudio:
+                tts: Sorry not english world
+              priority:
+                lit: 0
+              preferredAgents:
+                noValue: true
+              languageSkill:
+                noValue: true
+              failureOutputs:
+                errorType:
+                  noValue: true
+                errorMessage:
+                  noValue: true
+              outputs:
+                failure:
+                  actions:
+                    - disconnect:
+                        name: Disconnect
+    - task:
+        name: Tamil
+        refId: Tamil_24
+        actions:
+          - playAudio:
+              name: Play Audio
+              audio:
+                tts: Welcome to Chennai
+          - transferToAcd:
+              name: Transfer to ACD
+              targetQueue:
+                lit:
+                  name: Sales
+              preTransferAudio:
+                tts: "Ungal Kavanthuruku Vannakkam "
+              failureTransferAudio:
+                tts: Nandri Naliku varuvum
+              priority:
+                lit: 0
+              preferredAgents:
+                noValue: true
+              languageSkill:
+                noValue: true
+              failureOutputs:
+                errorType:
+                  noValue: true
+                errorMessage:
+                  noValue: true
+              outputs:
+                failure:
+                  actions:
+                    - disconnect:
+                        name: Disconnect
